@@ -1,0 +1,30 @@
+{
+	"compilerOptions": {
+		"alwaysStrict": true,
+		"baseUrl": "lib",
+		"declaration": true,
+		"experimentalDecorators": true,
+		"forceConsistentCasingInFileNames": true,
+		"jsx": "react",
+		"lib": [
+			"dom",
+			"es2015"
+		],
+		"module": "commonjs",
+		"moduleResolution": "node",
+		"noImplicitAny": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"outDir": "./src",
+		"removeComments": true,
+		"strict": true,
+		"target": "es5"
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"include": [
+		"./lib/**/*.ts",
+		"./lib/**/*.tsx"
+	]
+}
