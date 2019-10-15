@@ -4,16 +4,20 @@ var Container = (function () {
     function Container() {
         this._blocs = new Map();
     }
-    Container.prototype.register = function (symbol, bloc) {
-        this._blocs.set(symbol, bloc);
+    Container.prototype.register = function (key, bloc) {
+        this._blocs.set(key.symbol, bloc);
     };
-    Container.prototype.get = function (symbol) {
-        var bloc = this._blocs.get(symbol);
+    Container.prototype.unregister = function (key) {
+        this._blocs.delete(key.symbol);
+    };
+    Container.prototype.get = function (key) {
+        var bloc = this._blocs.get(key.symbol);
         if (bloc === undefined) {
-            throw new Error('Invalid symbol');
+            throw new Error('Invalid key');
         }
         return bloc;
     };
     return Container;
 }());
-exports.default = new Container();
+var container = new Container();
+exports.default = container;

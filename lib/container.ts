@@ -1,20 +1,31 @@
 import Bloc from './Bloc'
 
+interface BlocKey<E, S> {
+	symbol: Symbol
+	class?: { new(): Bloc<E, S> }
+}
+
 class Container {
 	private _blocs: Map<Symbol, Bloc<any, any>> = new Map()
 
-	public register<E, S>(symbol: Symbol, bloc: Bloc<E, S>) {
-		this._blocs.set(symbol, bloc)
+	public register<E, S>(key: BlocKey<E, S>, bloc: Bloc<E, S>) {
+		this._blocs.set(key.symbol, bloc)
 	}
 
-	public get<E, S>(symbol: Symbol): Bloc<E, S> {
-		const bloc = this._blocs.get(symbol)
+	public unregister<E, S>(key: BlocKey<E, S>) {
+		this._blocs.delete(key.symbol)
+	}
+
+	public get<E, S>(key: BlocKey<E, S>): Bloc<E, S> {
+		const bloc = this._blocs.get(key.symbol)
 		if (bloc === undefined) {
-			throw new Error('Invalid symbol')
+			throw new Error('Invalid key')
 		}
 
 		return bloc
 	}
 }
 
-export default new Container()
+const container = new Container()
+
+export { BlocKey, container as default }
