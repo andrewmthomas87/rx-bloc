@@ -6,3 +6,5 @@ var BlocBuilder_1 = require("./BlocBuilder");
 exports.BlocBuilder = BlocBuilder_1.default;
 var container_1 = require("./container");
 exports.container = container_1.default;
+var hooks_1 = require("./hooks");
+exports.useBloc = hooks_1.useBloc;

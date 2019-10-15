@@ -1,4 +1,5 @@
 import Bloc from './Bloc';
 import BlocBuilder from './BlocBuilder';
 import container from './container';
-export { Bloc, BlocBuilder, container };
+import { useBloc } from './hooks';
+export { Bloc, BlocBuilder, container, useBloc };

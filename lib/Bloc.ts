@@ -4,17 +4,23 @@ import { NodeEventHandler } from 'rxjs/internal/observable/fromEvent'
 
 abstract class Bloc<E, S> {
 	private _eventHandler: NodeEventHandler | null = null
+	private _state: BehaviorSubject<S>
 
 	public state: Observable<S>
 
+	public get currentState(): S {
+		return this._state.getValue()
+	}
+
 	public constructor() {
+		this._state = new BehaviorSubject(this._initialState())
 		this.state = fromEventPattern<E>(
 			handler => this._eventHandler = handler,
 			() => this._eventHandler = null
 		).pipe(
 			mergeMap(this._mapEventToState),
 			distinctUntilChanged(),
-			multicast(new BehaviorSubject(this._initialState()))
+			multicast(this._state)
 		)
 	}
 
