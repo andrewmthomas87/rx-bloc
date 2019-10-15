@@ -8,6 +8,9 @@ var Bloc = (function () {
         this._eventHandler = null;
         this._state = new rxjs_1.BehaviorSubject(this._initialState());
         this.state = rxjs_1.fromEventPattern(function (handler) { return _this._eventHandler = handler; }, function () { return _this._eventHandler = null; }).pipe(operators_1.mergeMap(this._mapEventToState), operators_1.distinctUntilChanged(), operators_1.multicast(this._state));
+        {
+            this.state.connect();
+        }
     }
     Object.defineProperty(Bloc.prototype, "currentState", {
         get: function () {

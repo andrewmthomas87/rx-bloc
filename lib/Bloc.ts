@@ -1,4 +1,4 @@
-import { fromEventPattern, BehaviorSubject, Observable } from 'rxjs'
+import { fromEventPattern, BehaviorSubject, Observable, ConnectableObservable } from 'rxjs'
 import { multicast, mergeMap, distinctUntilChanged } from 'rxjs/operators'
 import { NodeEventHandler } from 'rxjs/internal/observable/fromEvent'
 
@@ -20,8 +20,9 @@ abstract class Bloc<E, S> {
 		).pipe(
 			mergeMap(this._mapEventToState),
 			distinctUntilChanged(),
-			multicast(this._state)
+			multicast(this._state),
 		)
+		{ (this.state as ConnectableObservable<S>).connect() }
 	}
 
 	public dispatch(event: E) {
