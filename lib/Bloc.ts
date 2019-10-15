@@ -18,7 +18,7 @@ abstract class Bloc<E, S> {
 			handler => this._eventHandler = handler,
 			() => this._eventHandler = null
 		).pipe(
-			mergeMap(this._mapEventToState),
+			mergeMap(this._mapEventToState.bind(this)),
 			distinctUntilChanged(),
 			multicast(this._state),
 		)
