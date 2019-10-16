@@ -11,7 +11,7 @@ function useBlocState(bloc) {
 }
 exports.useBlocState = useBlocState;
 function useBlocDerivedState(bloc, derive, initialValue) {
-    var _a = react_1.useState(initialValue), derivedState = _a[0], setDerivedState = _a[1];
+    var _a = react_1.useState(initialValue(bloc.currentState)), derivedState = _a[0], setDerivedState = _a[1];
     react_1.useEffect(function () {
         var subscription = derive(bloc.state).subscribe(function (state) { return setDerivedState(state); });
         return subscription.unsubscribe;
