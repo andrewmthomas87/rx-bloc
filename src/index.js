@@ -9,3 +9,4 @@ exports.container = container_1.default;
 var hooks_1 = require("./hooks");
 exports.useBlocState = hooks_1.useBlocState;
 exports.useBlocDerivedState = hooks_1.useBlocDerivedState;
+exports.useBlocMappedState = hooks_1.useBlocMappedState;

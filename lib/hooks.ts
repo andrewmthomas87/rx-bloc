@@ -1,6 +1,7 @@
 import Bloc from './Bloc'
 import { useState, useEffect } from 'react'
 import { Observable } from 'rxjs'
+import { map, distinctUntilChanged } from 'rxjs/operators'
 
 function useBlocState<E, S>(bloc: Bloc<E, S>): S {
 	const [state, setState] = useState(() => bloc.currentState)
@@ -24,4 +25,15 @@ function useBlocDerivedState<E, S, T>(bloc: Bloc<E, S>, derive: (state: Observab
 	return derivedState
 }
 
-export { useBlocState, useBlocDerivedState }
+function useBlocMappedState<E, S, T>(bloc: Bloc<E, S>, derive: (state: S) => T): T {
+	return useBlocDerivedState(
+		bloc,
+		state => state.pipe(
+			map(derive),
+			distinctUntilChanged()
+		),
+		derive
+	)
+}
+
+export { useBlocState, useBlocDerivedState, useBlocMappedState }
