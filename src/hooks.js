@@ -10,20 +10,10 @@ function useBlocState(bloc) {
     return state;
 }
 exports.useBlocState = useBlocState;
-function useBlocDerivedState(bloc, derive, compare) {
-    var _a = react_1.useState(function () { return derive(bloc.currentState); }), derivedState = _a[0], setDerivedState = _a[1];
+function useBlocDerivedState(bloc, derive, initialValue) {
+    var _a = react_1.useState(initialValue), derivedState = _a[0], setDerivedState = _a[1];
     react_1.useEffect(function () {
-        var subscription = bloc.state.subscribe(function (nextState) {
-            var nextDerivedState = derive(nextState);
-            if (compare !== undefined) {
-                if (compare(derivedState, nextDerivedState)) {
-                    setDerivedState(nextDerivedState);
-                }
-            }
-            else if (!Object.is(nextDerivedState, derivedState)) {
-                setDerivedState(nextDerivedState);
-            }
-        });
+        var subscription = derive(bloc.state).subscribe(function (state) { return setDerivedState(state); });
         return subscription.unsubscribe;
     }, [bloc]);
     return derivedState;

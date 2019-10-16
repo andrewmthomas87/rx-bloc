@@ -1,5 +1,6 @@
 import Bloc from './Bloc'
 import { useState, useEffect } from 'react'
+import { Observable } from 'rxjs'
 
 function useBlocState<E, S>(bloc: Bloc<E, S>): S {
 	const [state, setState] = useState(() => bloc.currentState)
@@ -12,20 +13,10 @@ function useBlocState<E, S>(bloc: Bloc<E, S>): S {
 	return state
 }
 
-function useBlocDerivedState<E, S, T>(bloc: Bloc<E, S>, derive: (state: S) => T, compare?: (derivedState: T, nextDerivedState: T) => boolean): T {
-	const [derivedState, setDerivedState] = useState(() => derive(bloc.currentState))
+function useBlocDerivedState<E, S, T>(bloc: Bloc<E, S>, derive: (state: Observable<S>) => Observable<T>, initialValue: T | (() => T)): T {
+	const [derivedState, setDerivedState] = useState(initialValue)
 	useEffect(function () {
-		const subscription = bloc.state.subscribe((nextState: S) => {
-			const nextDerivedState = derive(nextState)
-			if (compare !== undefined) {
-				if (compare(derivedState, nextDerivedState)) {
-					setDerivedState(nextDerivedState)
-				}
-			}
-			else if (!Object.is(nextDerivedState, derivedState)) {
-				setDerivedState(nextDerivedState)
-			}
-		})
+		const subscription = derive(bloc.state).subscribe(state => setDerivedState(state))
 
 		return subscription.unsubscribe
 	}, [bloc])
