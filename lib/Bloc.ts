@@ -12,8 +12,9 @@ abstract class Bloc<E, S> {
 		return this._state.getValue()
 	}
 
-	public constructor() {
-		this._state = new BehaviorSubject(this._initialState())
+	public constructor(...args: any) {
+		this._state = new BehaviorSubject(this._initialState(...args))
+
 		this.state = fromEventPattern<E>(
 			handler => this._eventHandler = handler,
 			() => this._eventHandler = null
@@ -31,7 +32,7 @@ abstract class Bloc<E, S> {
 		}
 	}
 
-	protected abstract _initialState(): S
+	protected abstract _initialState(...args: any): S
 
 	protected abstract _mapEventToState(event: E): Observable<S>
 }
