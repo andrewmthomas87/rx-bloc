@@ -8,7 +8,7 @@ function useBlocState<E, S>(bloc: Bloc<E, S>): S {
 	useEffect(function () {
 		const subscription = bloc.state.subscribe(state => setState(state))
 
-		return subscription.unsubscribe
+		return () => subscription.unsubscribe()
 	}, [bloc])
 
 	return state
@@ -19,7 +19,7 @@ function useBlocDerivedState<E, S, T>(bloc: Bloc<E, S>, derive: (state: Observab
 	useEffect(function () {
 		const subscription = derive(bloc.state).subscribe(state => setDerivedState(state))
 
-		return subscription.unsubscribe
+		return () => subscription.unsubscribe()
 	}, [bloc])
 
 	return derivedState
