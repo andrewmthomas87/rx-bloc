@@ -2,6 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var react_1 = require("react");
 var operators_1 = require("rxjs/operators");
+function useTemporaryBloc(factory) {
+    var bloc = react_1.useState(factory)[0];
+    return bloc;
+}
+exports.useTemporaryBloc = useTemporaryBloc;
 function useBlocState(bloc) {
     var _a = react_1.useState(function () { return bloc.currentState; }), state = _a[0], setState = _a[1];
     react_1.useEffect(function () {

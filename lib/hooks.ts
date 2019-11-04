@@ -3,6 +3,12 @@ import { useState, useEffect } from 'react'
 import { Observable } from 'rxjs'
 import { map, distinctUntilChanged } from 'rxjs/operators'
 
+function useTemporaryBloc<E, S>(factory: () => Bloc<E, S>): Bloc<E, S> {
+	const [bloc] = useState(factory)
+
+	return bloc
+}
+
 function useBlocState<E, S>(bloc: Bloc<E, S>): S {
 	const [state, setState] = useState(() => bloc.currentState)
 	useEffect(function () {
@@ -36,4 +42,4 @@ function useBlocMappedState<E, S, T>(bloc: Bloc<E, S>, derive: (state: S) => T):
 	)
 }
 
-export { useBlocState, useBlocDerivedState, useBlocMappedState }
+export { useTemporaryBloc, useBlocState, useBlocDerivedState, useBlocMappedState }
