@@ -3,8 +3,19 @@ import { useState, useEffect } from 'react'
 import { Observable } from 'rxjs'
 import { map, distinctUntilChanged } from 'rxjs/operators'
 
-function useTemporaryBloc<E, S>(factory: () => Bloc<E, S>): Bloc<E, S> {
-	const [bloc] = useState(factory)
+import container, { BlocKey } from './container'
+
+function useTemporaryBloc<E, S>(key: BlocKey<E, S>, factory: () => Bloc<E, S>): Bloc<E, S> {
+	const [bloc] = useState(() => {
+		const bloc = factory()
+		container.register(key, bloc)
+
+		return bloc
+	})
+
+	useEffect(() => {
+		return () => container.unregister(key)
+	}, [])
 
 	return bloc
 }
